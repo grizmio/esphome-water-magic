@@ -19,6 +19,7 @@ public:
   bool setuped = false;
 
   void setup() {
+    ESP_LOGD(TAG, "setup() begin");
     if (this->echo_pin == -1 || this->trigger_pin == -1) {
       ESP_LOGD(TAG, "pines no inicializados, nada que medir");
       return;
@@ -41,7 +42,7 @@ public:
 
   double get_distance(int meas_count) {
     unsigned long avg = get_duration();
-    // ESP_LOGD(TAG, "distancia inicial: %lu", avg);
+    ESP_LOGD(TAG, "distancia inicial: %lu", avg);
     size_t i = 0;
 
     unsigned long duration;
@@ -55,7 +56,7 @@ public:
     } while (i < meas_count);
     double distance =
         avg * 0.038 / 2;  // Speed of sound wave divided by 2 (go and back)
-    // ESP_LOGD(TAG, "distancia final: %lu", avg);
+    ESP_LOGD(TAG, "distancia final: %lu", avg);
     return distance;
   }
 
@@ -76,7 +77,7 @@ void taskCoreX(void* pvParameters) {
   delay(2 * 1000);
   // ESP_LOGD(TAG, "", esp_cpu_get_cpuid());
   Meador* meador = (Meador*)pvParameters;
-  
+
   for (;;) {
     ESP_LOGD(TAG,
              "Tarea corriendo en el Core X. Millis: %lu | echo_pin %i | "
