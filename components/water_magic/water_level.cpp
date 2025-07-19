@@ -7,8 +7,8 @@
 #include "water_level.h"
 
 namespace esphome {
-namespace water_level_sensor {
-static const char* TAG = "water_level_sensor";
+namespace water_magic {
+static const char* TAG = "water_magic";
 TaskHandle_t taskCoreXHandle;
 
 class Meador {
@@ -88,12 +88,12 @@ void taskCoreX(void* pvParameters) {
   }
 };
 
-WaterLevelSensor::WaterLevelSensor(const char* name) : name(name) {
+WaterMagic::WaterMagic(const char* name) : name(name) {
   ESP_LOGD("custom", "Nombre: %s", name);
   LOG_SENSOR("", name, this);
 }
 
-void WaterLevelSensor::update() {
+void WaterMagic::update() {
   if(!meador.setuped) {
     return;
   }
@@ -101,7 +101,7 @@ void WaterLevelSensor::update() {
   this->publish_state( (float) (meador.liters));
 }
 
-void WaterLevelSensor::setup() {
+void WaterMagic::setup() {
   ESP_LOGD(TAG, "Setting up ':-)' ");
   ESP_LOGD(TAG, "trigpin: %i", this->trigger_pin);
   ESP_LOGD(TAG, "echoPin: %i", this->echo_pin);
@@ -121,24 +121,24 @@ void WaterLevelSensor::setup() {
   );
 }
 
-void WaterLevelSensor::dump_config() {
+void WaterMagic::dump_config() {
   LOG_SENSOR("", "Water Level Sensor", this);
   LOG_UPDATE_INTERVAL(this);
 }
 
-float WaterLevelSensor::get_setup_priority() const {
+float WaterMagic::get_setup_priority() const {
   return setup_priority::DATA;  // LATE o DATA
 }
-void WaterLevelSensor::set_echo_pin(int pin) {
+void WaterMagic::set_echo_pin(int pin) {
   this->echo_pin = pin;
   // Agregar mutex
   meador.echo_pin = pin;
 }
-void WaterLevelSensor::set_trigger_pin(int pin) {
+void WaterMagic::set_trigger_pin(int pin) {
   this->trigger_pin = pin;
   // Agregar mutex
   meador.trigger_pin = pin;
 }
 
-};  // namespace water_level_sensor
+};  // namespace water_magic
 };  // namespace esphome

@@ -6,11 +6,11 @@
 #include "esphome/core/log.h"
 
 namespace esphome {
-namespace water_level_sensor {
+namespace water_magic {
 
-class WaterLevelSensor : public sensor::Sensor, public PollingComponent {
+class WaterMagic : public sensor::Sensor, public PollingComponent {
  public:
-  WaterLevelSensor(const char* name);
+  WaterMagic(const char* name);
 
   void update() override;
 
@@ -29,6 +29,6 @@ class WaterLevelSensor : public sensor::Sensor, public PollingComponent {
   
 };
 
-};  // namespace water_level_sensor
+};  // namespace water_magic
 };  // namespace esphome
 // edwin

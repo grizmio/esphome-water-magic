@@ -20,12 +20,12 @@ CODEOWNERS = ["@grizmio"]
 TRIGGER_PIN = "trigger_pin"
 ECHO_PIN = "echo_pin"
 
-water_level_sensor = cg.esphome_ns.namespace("water_level_sensor")
-WaterLevelSensor = water_level_sensor.class_("WaterLevelSensor", cg.PollingComponent)
-water_level_sensorComponentRef = WaterLevelSensor.operator("ref")
+water_magic = cg.esphome_ns.namespace("water_magic")
+WaterMagic = water_magic.class_("WaterMagic", cg.PollingComponent)
+water_magicComponentRef = WaterMagic.operator("ref")
 CONFIG_SCHEMA = (
     sensor.sensor_schema(
-        WaterLevelSensor,
+        WaterMagic,
         unit_of_measurement=UNIT_CENTIMETER,
         icon=ICON_RULER,
         accuracy_decimals=1,
@@ -34,7 +34,7 @@ CONFIG_SCHEMA = (
     )
     .extend(
         {
-            cv.GenerateID(CONF_ID): cv.declare_id(WaterLevelSensor),
+            cv.GenerateID(CONF_ID): cv.declare_id(WaterMagic),
             cv.Optional(TRIGGER_PIN, default=13): cv.int_,
             cv.Optional(ECHO_PIN, default=15): cv.int_,
         }
@@ -44,7 +44,7 @@ CONFIG_SCHEMA = (
 
 
 async def to_code(config):
-    var = cg.new_Pvariable(config[CONF_ID], "WaterLevelSensor")
+    var = cg.new_Pvariable(config[CONF_ID], "WaterMagic")
     await sensor.register_component(var, config)
     cg.add_platformio_option("framework", "arduino")
     cg.add_build_flag("-DUSE_ARDUINO")
@@ -54,6 +54,6 @@ async def to_code(config):
  
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
-            config[CONF_LAMBDA], [(water_level_sensorComponentRef, "it")], return_type=cg.void
+            config[CONF_LAMBDA], [(water_magicComponentRef, "it")], return_type=cg.void
         )
         cg.add(var.set_writer(lambda_))
