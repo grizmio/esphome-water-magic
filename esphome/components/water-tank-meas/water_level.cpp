@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "pico.h"
 
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/component.h"
