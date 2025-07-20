@@ -1,0 +1,44 @@
+esphome:
+  name: estanque
+  friendly_name: estanque
+
+esp32:
+  board: ttgo-t1
+  framework:
+    type: arduino
+    version: 2.0.17
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "HOPp73XyzcWWDl8DVzEbKololIcBjHoJFWEcst88cnI="
+
+ota:
+  - platform: esphome
+    password: "1c07125134f22f710c7c66bf347adbe4"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Estanque Fallback Hotspot"
+    password: "hrOK2wbUkyB9"
+
+captive_portal:
+
+external_components:
+  - source:
+      type: git
+      url: file:///external_components/water_magic
+      ref: main
+    refresh: 1s
+    components: [ water_magic ]
+
+sensor:
+  - platform: water_magic
+    id: goo

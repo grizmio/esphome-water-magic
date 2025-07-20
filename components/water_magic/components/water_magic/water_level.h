@@ -10,7 +10,7 @@ namespace water_magic {
 
 class WaterMagic : public sensor::Sensor, public PollingComponent {
  public:
-  WaterMagic(const char* name);
+  WaterMagic();
 
   void update() override;
 
@@ -24,7 +24,6 @@ class WaterMagic : public sensor::Sensor, public PollingComponent {
 
   int echo_pin = -1;
   int trigger_pin = -1;
-  const char* name;
   uint32_t time_period_ = 5 * 1000;
   
 };

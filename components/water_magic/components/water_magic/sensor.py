@@ -1,28 +1,17 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import display, output
-from esphome.const import (
-    CONF_ID,
-    CONF_LAMBDA,
-    CONF_PLATFORM_VERSION,
-    DEVICE_CLASS_WATER,
-    ICON_RULER,
-    STATE_CLASS_MEASUREMENT,
-    UNIT_CENTIMETER,
-)
-from esphome.pins import gpio_output_pin_schema
-
-IS_TARGET_PLATFORM = True
-DEPENDENCIES = []
+from esphome.components import sensor
+from esphome.const import (UNIT_EMPTY, ICON_EMPTY, UNIT_CENTIMETER, ICON_RULER, DEVICE_CLASS_WATER,
+			   CONF_ID, CONF_LAMBDA, CONF_PLATFORM_VERSION, STATE_CLASS_MEASUREMENT)
 
 CODEOWNERS = ["@grizmio"]
 
 TRIGGER_PIN = "trigger_pin"
 ECHO_PIN = "echo_pin"
 
-water_magic = cg.esphome_ns.namespace("water_magic")
-WaterMagic = water_magic.class_("WaterMagic", cg.PollingComponent)
-water_magicComponentRef = WaterMagic.operator("ref")
+water_magic_ns = cg.esphome_ns.namespace("water_magic")
+WaterMagic = water_magic_ns.class_("WaterMagic", cg.PollingComponent)
+
 CONFIG_SCHEMA = (
     sensor.sensor_schema(
         WaterMagic,
@@ -42,18 +31,11 @@ CONFIG_SCHEMA = (
     .extend(cv.polling_component_schema("10s"))
 )
 
-
 async def to_code(config):
-    var = cg.new_Pvariable(config[CONF_ID], "WaterMagic")
-    await output.register_component(var, config)
+    var = await sensor.new_sensor(config)
+    await cg.register_component(var, config)
     cg.add_platformio_option("framework", "arduino")
     cg.add_build_flag("-DUSE_ARDUINO")
 
     cg.add(var.set_trigger_pin(config[TRIGGER_PIN]))
     cg.add(var.set_echo_pin(config[ECHO_PIN]))
- 
-    if CONF_LAMBDA in config:
-        lambda_ = await cg.process_lambda(
-            config[CONF_LAMBDA], [(water_magicComponentRef, "it")], return_type=cg.void
-        )
-        cg.add(var.set_writer(lambda_))

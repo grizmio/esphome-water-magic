@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include "pico.h"
 
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/component.h"
@@ -42,8 +41,9 @@ public:
   }
 
   double get_distance(int meas_count) {
+    ESP_LOGD(TAG, "get_distance() inicio");
     unsigned long avg = get_duration();
-    ESP_LOGD(TAG, "distancia inicial: %lu", avg);
+    ESP_LOGD(TAG, "get_distance()| distancia inicial: %lu", avg);
     size_t i = 0;
 
     unsigned long duration;
@@ -57,14 +57,16 @@ public:
     } while (i < meas_count);
     double distance =
         avg * 0.038 / 2;  // Speed of sound wave divided by 2 (go and back)
-    ESP_LOGD(TAG, "distancia final: %lu", avg);
+
+    ESP_LOGD(TAG, "get_distance()| distancia final| avg: %lu", avg);
+    ESP_LOGD(TAG, "get_distance()| distancia final| distance: %lf", distance);
     return distance;
   }
 
   double to_liters(double distance) {
     return distance * 3141.592653589793238;
   }
-  
+
   void get_liters() {
     this->distance = this->get_distance(3);
     this->liters = this->to_liters(this->distance);
@@ -81,16 +83,19 @@ void taskCoreX(void* pvParameters) {
 
   for (;;) {
     ESP_LOGD(TAG,
-             "Tarea corriendo en el Core X. Millis: %lu | echo_pin %i | "
+             "Tarea corriendo en el Core X (1). Millis: %lu | echo_pin %i | "
              "trigger_pin %i",
              millis(), meador->echo_pin, meador->trigger_pin);
-    delay(10*1000);
+
+    ESP_LOGD(TAG,
+             "Tarea corriendo en el Core X (1). Super distancia: %lf", meador->get_distance(3));
+    delay(2*1000);
   }
 };
 
-WaterMagic::WaterMagic(const char* name) : name(name) {
-  ESP_LOGD("custom", "Nombre: %s", name);
-  LOG_SENSOR("", name, this);
+WaterMagic::WaterMagic() {
+  ESP_LOGD("custom", "Enzolico");
+  LOG_SENSOR("", "foo", this);
 }
 
 void WaterMagic::update() {
