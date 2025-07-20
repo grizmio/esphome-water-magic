@@ -65,7 +65,7 @@ public:
 
   double to_liters(double distance) { return distance * 3141.592653589793238; }
 
-  void set_distance_meas() {
+  void set_distance_liters() {
     this->distance = this->get_distance(3);
     this->liters = this->to_liters(this->distance);
   }
@@ -85,7 +85,7 @@ void taskCoreX(void *pvParameters) {
              "trigger_pin %i",
              millis(), meador->echo_pin, meador->trigger_pin);
              
-    meador->set_distance_meas();
+    meador->set_distance_liters();
     ESP_LOGD(TAG, "Tarea corriendo en el Core X (1). Super distancia: %lf",
              meador->distance);
              delay(2 * 1000);
