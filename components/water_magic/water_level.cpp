@@ -14,7 +14,6 @@ class Meador {
 public:
   int echo_pin;
   int trigger_pin;
-  double liters;
   double distance;
   bool setuped = false;
 
@@ -27,7 +26,6 @@ public:
     pinMode(this->trigger_pin, OUTPUT); // Sets the trigPin as an OUTPUT
     pinMode(this->echo_pin, INPUT);     // Sets the echoPin as an INPUT
     // this->distance = this->get_distance();
-    // this->liters = this->to_liters(this->distance);
     this->setuped = true;
   }
   unsigned long get_duration() {
@@ -41,9 +39,9 @@ public:
   }
 
   double get_distance(int meas_count) {
-    ESP_LOGD(TAG, "get_distance() inicio");
+    // ESP_LOGD(TAG, "get_distance() inicio");
     unsigned long avg = get_duration();
-    ESP_LOGD(TAG, "get_distance()| distancia inicial: %lu", avg);
+    // ESP_LOGD(TAG, "get_distance()| distancia inicial: %lu", avg);
     size_t i = 0;
 
     unsigned long duration;
@@ -51,7 +49,7 @@ public:
       duration = get_duration();
       avg = (avg + duration) / 2;
       if (meas_count > 1) {
-        delay(1);
+        vTaskDelay(pdMS_TO_TICKS(1));
       }
       i++;
     } while (i < meas_count);
@@ -59,23 +57,20 @@ public:
         avg * 0.038 / 2; // Speed of sound wave divided by 2 (go and back)
 
     // ESP_LOGD(TAG, "get_distance()| distancia final| avg: %lu", avg);
-    // ESP_LOGD(TAG, "get_distance()| distancia final| distance: %lf", distance);
+    // ESP_LOGD(TAG, "get_distance()| distancia final| distance: %lf",
+    // distance);
     return distance;
   }
 
-  double to_liters(double distance) { return distance * 3141.592653589793238; }
-
-  void set_distance_liters() {
-    this->distance = this->get_distance(3);
-    this->liters = this->to_liters(this->distance);
-  }
+  void set_distance() { this->distance = this->get_distance(3); }
 };
 // fin clase Meador
 
 Meador meador;
 
 void taskCoreX(void *pvParameters) {
-  delay(2 * 1000);
+  // delay(2 * 1000);
+  vTaskDelay(pdMS_TO_TICKS(2 * 1000));
   // ESP_LOGD(TAG, "", esp_cpu_get_cpuid());
   Meador *meador = (Meador *)pvParameters;
 
@@ -84,23 +79,28 @@ void taskCoreX(void *pvParameters) {
     //          "Tarea corriendo en el Core X (1). Millis: %lu | echo_pin %i | "
     //          "trigger_pin %i",
     //          millis(), meador->echo_pin, meador->trigger_pin);
-             
-    meador->set_distance_liters();
+
+    meador->set_distance();
     // ESP_LOGD(TAG, "Tarea corriendo en el Core X (1). Super distancia: %lf",
     //          meador->distance);
-             delay(2 * 1000);
+    vTaskDelay(pdMS_TO_TICKS(2 * 1000));
   }
 };
 
-WaterMagic::WaterMagic() {
-}
+WaterMagic::WaterMagic() {}
 
 void WaterMagic::update() {
   if (!meador.setuped) {
     return;
   }
   // Agregar mutex
-  this->publish_state((float)(meador.liters));
+  this->publish_state((float)(this->to_liters(meador.distance)));
+}
+
+double WaterMagic::to_liters(double distance) {
+  // distance_adjustment es para ajustar la distancia medida por posibles
+  // diferencias entre la distancia medida y la distancia real del estanque
+  return (distance + this->distance_adjustment) * this->magic_factor_converter;
 }
 
 void WaterMagic::setup() {
@@ -124,22 +124,29 @@ void WaterMagic::setup() {
 }
 
 void WaterMagic::dump_config() {
-  LOG_SENSOR("", "Water Level Sensor", this);
+  LOG_SENSOR(TAG, "Water Level Sensor", this);
   LOG_UPDATE_INTERVAL(this);
 }
 
 float WaterMagic::get_setup_priority() const {
-  return setup_priority::DATA; // LATE o DATA
+  // https://api-docs.esphome.io/namespaceesphome_1_1setup__priority
+  return setup_priority::IO;
 }
+
 void WaterMagic::set_echo_pin(int pin) {
   this->echo_pin = pin;
-  // Agregar mutex
+  // TODO: Agregar mutex
   meador.echo_pin = pin;
 }
+
 void WaterMagic::set_trigger_pin(int pin) {
   this->trigger_pin = pin;
-  // Agregar mutex
+  // TODO: Agregar mutex
   meador.trigger_pin = pin;
+}
+
+void WaterMagic::set_distance_adjustment(double distance_adjustment) {
+  this->distance_adjustment = distance_adjustment;
 }
 
 }; // namespace water_magic
