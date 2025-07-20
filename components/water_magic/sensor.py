@@ -6,7 +6,7 @@ from esphome.const import (
     DEVICE_CLASS_WATER,
     CONF_ID,
     STATE_CLASS_MEASUREMENT,
-    UNIT_LITERS,
+    UNIT_LITRE,
 )
 
 CODEOWNERS = ["@grizmio"]
@@ -21,7 +21,7 @@ WaterMagic = water_magic_ns.class_("WaterMagic", cg.PollingComponent)
 CONFIG_SCHEMA = (
     sensor.sensor_schema(
         WaterMagic,
-        unit_of_measurement=UNIT_LITERS,
+        unit_of_measurement=UNIT_LITRE,
         icon=ICON_RULER,
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_WATER,
