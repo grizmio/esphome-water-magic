@@ -1,8 +1,13 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
-from esphome.const import (UNIT_EMPTY, ICON_EMPTY, UNIT_CENTIMETER, ICON_RULER, DEVICE_CLASS_WATER,
-			   CONF_ID, CONF_LAMBDA, CONF_PLATFORM_VERSION, STATE_CLASS_MEASUREMENT)
+from esphome.const import (
+    ICON_RULER,
+    DEVICE_CLASS_WATER,
+    CONF_ID,
+    STATE_CLASS_MEASUREMENT,
+    UNIT_LITERS,
+)
 
 CODEOWNERS = ["@grizmio"]
 
@@ -15,7 +20,7 @@ WaterMagic = water_magic_ns.class_("WaterMagic", cg.PollingComponent)
 CONFIG_SCHEMA = (
     sensor.sensor_schema(
         WaterMagic,
-        unit_of_measurement=UNIT_CENTIMETER,
+        unit_of_measurement=UNIT_LITERS,
         icon=ICON_RULER,
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_WATER,
@@ -30,6 +35,7 @@ CONFIG_SCHEMA = (
     )
     .extend(cv.polling_component_schema("10s"))
 )
+
 
 async def to_code(config):
     var = await sensor.new_sensor(config)

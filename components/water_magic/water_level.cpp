@@ -21,7 +21,7 @@ public:
   void setup() {
     ESP_LOGD(TAG, "setup() begin");
     if (this->echo_pin == -1 || this->trigger_pin == -1) {
-      ESP_LOGD(TAG, "pines no inicializados, nada que medir");
+      ESP_LOGD(TAG, "pines no inicializados, no es posible medir");
       return;
     }
     pinMode(this->trigger_pin, OUTPUT); // Sets the trigPin as an OUTPUT
@@ -58,8 +58,8 @@ public:
     double distance =
         avg * 0.038 / 2; // Speed of sound wave divided by 2 (go and back)
 
-    ESP_LOGD(TAG, "get_distance()| distancia final| avg: %lu", avg);
-    ESP_LOGD(TAG, "get_distance()| distancia final| distance: %lf", distance);
+    // ESP_LOGD(TAG, "get_distance()| distancia final| avg: %lu", avg);
+    // ESP_LOGD(TAG, "get_distance()| distancia final| distance: %lf", distance);
     return distance;
   }
 
@@ -80,21 +80,19 @@ void taskCoreX(void *pvParameters) {
   Meador *meador = (Meador *)pvParameters;
 
   for (;;) {
-    ESP_LOGD(TAG,
-             "Tarea corriendo en el Core X (1). Millis: %lu | echo_pin %i | "
-             "trigger_pin %i",
-             millis(), meador->echo_pin, meador->trigger_pin);
+    // ESP_LOGD(TAG,
+    //          "Tarea corriendo en el Core X (1). Millis: %lu | echo_pin %i | "
+    //          "trigger_pin %i",
+    //          millis(), meador->echo_pin, meador->trigger_pin);
              
     meador->set_distance_liters();
-    ESP_LOGD(TAG, "Tarea corriendo en el Core X (1). Super distancia: %lf",
-             meador->distance);
+    // ESP_LOGD(TAG, "Tarea corriendo en el Core X (1). Super distancia: %lf",
+    //          meador->distance);
              delay(2 * 1000);
   }
 };
 
 WaterMagic::WaterMagic() {
-  ESP_LOGD("custom", "Enzolico");
-  LOG_SENSOR("", "foo", this);
 }
 
 void WaterMagic::update() {
