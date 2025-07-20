@@ -7,7 +7,7 @@
 
 namespace esphome {
 namespace water_magic {
-static const char* TAG = "water_magic";
+static const char *TAG = "water_magic";
 TaskHandle_t taskCoreXHandle;
 
 class Meador {
@@ -24,8 +24,8 @@ public:
       ESP_LOGD(TAG, "pines no inicializados, nada que medir");
       return;
     }
-    pinMode(this->trigger_pin, OUTPUT);  // Sets the trigPin as an OUTPUT
-    pinMode(this->echo_pin, INPUT);      // Sets the echoPin as an INPUT
+    pinMode(this->trigger_pin, OUTPUT); // Sets the trigPin as an OUTPUT
+    pinMode(this->echo_pin, INPUT);     // Sets the echoPin as an INPUT
     // this->distance = this->get_distance();
     // this->liters = this->to_liters(this->distance);
     this->setuped = true;
@@ -36,7 +36,7 @@ public:
     delayMicroseconds(2);
     digitalWrite(this->trigger_pin, HIGH);
     delayMicroseconds(20);
-    unsigned long p = pulseIn(this->echo_pin, HIGH);  //, t_out);
+    unsigned long p = pulseIn(this->echo_pin, HIGH); //, t_out);
     return p;
   }
 
@@ -56,18 +56,16 @@ public:
       i++;
     } while (i < meas_count);
     double distance =
-        avg * 0.038 / 2;  // Speed of sound wave divided by 2 (go and back)
+        avg * 0.038 / 2; // Speed of sound wave divided by 2 (go and back)
 
     ESP_LOGD(TAG, "get_distance()| distancia final| avg: %lu", avg);
     ESP_LOGD(TAG, "get_distance()| distancia final| distance: %lf", distance);
     return distance;
   }
 
-  double to_liters(double distance) {
-    return distance * 3141.592653589793238;
-  }
+  double to_liters(double distance) { return distance * 3141.592653589793238; }
 
-  void get_liters() {
+  void set_distance_meas() {
     this->distance = this->get_distance(3);
     this->liters = this->to_liters(this->distance);
   }
@@ -76,20 +74,21 @@ public:
 
 Meador meador;
 
-void taskCoreX(void* pvParameters) {
+void taskCoreX(void *pvParameters) {
   delay(2 * 1000);
   // ESP_LOGD(TAG, "", esp_cpu_get_cpuid());
-  Meador* meador = (Meador*)pvParameters;
+  Meador *meador = (Meador *)pvParameters;
 
   for (;;) {
     ESP_LOGD(TAG,
              "Tarea corriendo en el Core X (1). Millis: %lu | echo_pin %i | "
              "trigger_pin %i",
              millis(), meador->echo_pin, meador->trigger_pin);
-
-    ESP_LOGD(TAG,
-             "Tarea corriendo en el Core X (1). Super distancia: %lf", meador->get_distance(3));
-    delay(2*1000);
+             
+    meador->set_distance_meas();
+    ESP_LOGD(TAG, "Tarea corriendo en el Core X (1). Super distancia: %lf",
+             meador->distance);
+             delay(2 * 1000);
   }
 };
 
@@ -99,11 +98,11 @@ WaterMagic::WaterMagic() {
 }
 
 void WaterMagic::update() {
-  if(!meador.setuped) {
+  if (!meador.setuped) {
     return;
   }
   // Agregar mutex
-  this->publish_state( (float) (meador.liters));
+  this->publish_state((float)(meador.liters));
 }
 
 void WaterMagic::setup() {
@@ -115,14 +114,14 @@ void WaterMagic::setup() {
   meador.setup();
 
   // Crear tarea para el Core 0
-  xTaskCreatePinnedToCore(taskCoreX,     // Función de la tarea
-                          "TareaCoreX",  // Nombre de la tarea
-                          10000,  // Tamaño de la pila (en bytes, Arduino lo
-                                  // maneja diferente a ESP-IDF)
-                          (void*)&meador,  // Parámetros de la tarea
-                          10,                   // Prioridad de la tarea
-                          &taskCoreXHandle,    // Handle de la tarea (opcional)
-                          1  // Core en el que se ejecutará (0 para APP_CPU)
+  xTaskCreatePinnedToCore(taskCoreX,    // Función de la tarea
+                          "TareaCoreX", // Nombre de la tarea
+                          10000, // Tamaño de la pila (en bytes, Arduino lo
+                                 // maneja diferente a ESP-IDF)
+                          (void *)&meador,  // Parámetros de la tarea
+                          10,               // Prioridad de la tarea
+                          &taskCoreXHandle, // Handle de la tarea (opcional)
+                          1 // Core en el que se ejecutará (0 para APP_CPU)
   );
 }
 
@@ -132,7 +131,7 @@ void WaterMagic::dump_config() {
 }
 
 float WaterMagic::get_setup_priority() const {
-  return setup_priority::DATA;  // LATE o DATA
+  return setup_priority::DATA; // LATE o DATA
 }
 void WaterMagic::set_echo_pin(int pin) {
   this->echo_pin = pin;
@@ -145,5 +144,5 @@ void WaterMagic::set_trigger_pin(int pin) {
   meador.trigger_pin = pin;
 }
 
-};  // namespace water_magic
-};  // namespace esphome
+}; // namespace water_magic
+}; // namespace esphome
