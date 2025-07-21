@@ -21,6 +21,7 @@ public:
   void set_echo_pin(int pin);
   void set_trigger_pin(int pin);
   void set_distance_adjustment(double distance_adjustment);
+  double to_liters(double distance);
 
   int echo_pin = -1;
   int trigger_pin = -1;
