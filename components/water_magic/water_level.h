@@ -21,12 +21,13 @@ public:
   void set_echo_pin(int pin);
   void set_trigger_pin(int pin);
   void set_distance_adjustment(double distance_adjustment);
+  void set_distance_to_liters_factor(double distance_to_liters_factor);
 
   int echo_pin = -1;
   int trigger_pin = -1;
   double distance_adjustment = 0;
-  const double magic_factor_converter = 3141.592653589793238;
-  const uint32_t time_period_ = 5 * 1000;
+  double distance_to_liters_factor = 0;
+  uint32_t time_period_ = 5 * 1000;
 };
 
 }; // namespace water_magic

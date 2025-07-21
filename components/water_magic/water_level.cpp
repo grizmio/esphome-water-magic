@@ -100,7 +100,7 @@ void WaterMagic::update() {
 double WaterMagic::to_liters(double distance) {
   // distance_adjustment es para ajustar la distancia medida por posibles
   // diferencias entre la distancia medida y la distancia real del estanque
-  return (distance + this->distance_adjustment) * this->magic_factor_converter;
+  return (distance + this->distance_adjustment) * this->distance_to_liters_factor;
 }
 
 void WaterMagic::setup() {
@@ -147,6 +147,10 @@ void WaterMagic::set_trigger_pin(int pin) {
 
 void WaterMagic::set_distance_adjustment(double distance_adjustment) {
   this->distance_adjustment = distance_adjustment;
+}
+
+void WaterMagic::set_distance_to_liters_factor(double distance_to_liters_factor) {
+  this->distance_to_liters_factor = distance_to_liters_factor;
 }
 
 }; // namespace water_magic
