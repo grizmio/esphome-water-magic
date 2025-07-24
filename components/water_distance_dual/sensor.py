@@ -1,5 +1,5 @@
 import esphome.codegen as cg
-from esphome.components import i2c, sensor
+from esphome.components import sensor
 import esphome.config_validation as cv
 from esphome.const import (
     CONF_HUMIDITY,
@@ -12,7 +12,7 @@ from esphome.const import (
     UNIT_PERCENT,
 )
 
-DEPENDENCIES = ["i2c"]
+DEPENDENCIES = [""]
 
 dht12_ns = cg.esphome_ns.namespace("dht12")
 DHT12Component = dht12_ns.class_("DHT12Component", cg.PollingComponent, i2c.I2CDevice)
@@ -36,14 +36,12 @@ CONFIG_SCHEMA = (
         }
     )
     .extend(cv.polling_component_schema("60s"))
-    .extend(i2c.i2c_device_schema(0x5C))
 )
 
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-    await i2c.register_i2c_device(var, config)
 
     if CONF_TEMPERATURE in config:
         sens = await sensor.new_sensor(config[CONF_TEMPERATURE])
