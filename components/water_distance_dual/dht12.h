@@ -2,12 +2,11 @@
 
 #include "esphome/core/component.h"
 #include "esphome/components/sensor/sensor.h"
-#include "esphome/components/i2c/i2c.h"
 
 namespace esphome {
 namespace dht12 {
 
-class DHT12Component : public PollingComponent, public i2c::I2CDevice {
+class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
  public:
   void setup() override;
   void dump_config() override;
