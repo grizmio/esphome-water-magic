@@ -1,7 +1,3 @@
-// Implementation based on:
-//  - ESPEasy: https://github.com/letscontrolit/ESPEasy/blob/mega/src/_P034_DHT12.ino
-//  - DHT12_sensor_library: https://github.com/xreef/DHT12_sensor_library/blob/master/DHT12.cpp
-
 #include "dht12.h"
 #include "esphome/core/log.h"
 
@@ -10,7 +6,7 @@ namespace dht12 {
 
 static const char *const TAG = "dht12";
 
-void DHT12Component::update() {
+void WaterDistanceComponent::update() {
   uint8_t data[5];
   if (!this->read_data_(data)) {
     this->status_set_warning();
@@ -41,7 +37,7 @@ void DHT12Component::setup() {
     return;
   }
 }
-void DHT12Component::dump_config() {
+void WaterDistanceComponent::dump_config() {
   ESP_LOGD(TAG, "DHT12:");
   LOG_I2C_DEVICE(this);
   if (this->is_failed()) {
@@ -50,8 +46,8 @@ void DHT12Component::dump_config() {
   LOG_SENSOR("  ", "Temperature", this->temperature_sensor_);
   LOG_SENSOR("  ", "Humidity", this->humidity_sensor_);
 }
-float DHT12Component::get_setup_priority() const { return setup_priority::DATA; }
-bool DHT12Component::read_data_(uint8_t *data) {
+float WaterDistanceComponent::get_setup_priority() const { return setup_priority::DATA; }
+bool WaterDistanceComponent::read_data_(uint8_t *data) {
   if (!this->read_bytes(0, data, 5)) {
     ESP_LOGW(TAG, "Updating DHT12 failed!");
     return false;
