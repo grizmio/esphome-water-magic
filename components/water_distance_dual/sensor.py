@@ -19,8 +19,8 @@ ECHO_PIN = "echo_pin"
 DISTANCE_ADJUSTMENT = "distance_adjustment"
 DISTANCE_TO_LITERS_FACTOR = "distance_to_liters_factor"
 
-dht12_ns = cg.esphome_ns.namespace("dht12")
-WaterDistanceComponent = dht12_ns.class_("WaterDistanceComponent", cg.PollingComponent)
+water_distance_ns = cg.esphome_ns.namespace("water_distance")
+WaterDistanceComponent = water_distance_ns.class_("WaterDistanceComponent", cg.PollingComponent)
 
 CONFIG_SCHEMA = (
     cv.Schema(

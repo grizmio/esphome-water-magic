@@ -4,7 +4,7 @@
 #include "esphome/components/sensor/sensor.h"
 
 namespace esphome {
-namespace dht12 {
+namespace water_distance {
 
 class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
  public:
@@ -23,6 +23,6 @@ class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
   sensor::Sensor *humidity_sensor_{nullptr};
 };
 
-}  // namespace dht12
+}  // namespace water_distance
 }  // namespace esphome
 
