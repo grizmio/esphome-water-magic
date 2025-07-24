@@ -15,12 +15,12 @@ from esphome.const import (
 DEPENDENCIES = [""]
 
 dht12_ns = cg.esphome_ns.namespace("dht12")
-DHT12Component = dht12_ns.class_("DHT12Component", cg.PollingComponent, i2c.I2CDevice)
+WaterDistanceComponent = dht12_ns.class_("WaterDistanceComponent", cg.PollingComponent, i2c.I2CDevice)
 
 CONFIG_SCHEMA = (
     cv.Schema(
         {
-            cv.GenerateID(): cv.declare_id(DHT12Component),
+            cv.GenerateID(): cv.declare_id(WaterDistanceComponent),
             cv.Optional(CONF_TEMPERATURE): sensor.sensor_schema(
                 unit_of_measurement=UNIT_CELSIUS,
                 accuracy_decimals=1,
