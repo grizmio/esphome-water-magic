@@ -17,7 +17,6 @@ class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
   void set_humidity_sensor(sensor::Sensor *humidity_sensor) { humidity_sensor_ = humidity_sensor; }
 
  protected:
-  bool read_data_(uint8_t *data);
 
   sensor::Sensor *temperature_sensor_{nullptr};
   sensor::Sensor *humidity_sensor_{nullptr};
