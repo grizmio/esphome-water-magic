@@ -9,9 +9,9 @@ public:
   int trigger_pin;
   double distance;
   bool setuped = false;
-  const char* TAG;
+  char* TAG;
 
-  Meador(const char* tag) : echo_pin(-1), trigger_pin(-1), distance(0.0), TAG(tag) {}
+  Meador(char* tag) : echo_pin(-1), trigger_pin(-1), distance(0.0), TAG(tag) {}
 
 
   void setup() {

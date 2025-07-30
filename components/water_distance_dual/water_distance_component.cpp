@@ -7,7 +7,7 @@
 namespace esphome {
 namespace water_distance {
 
-static const char *const TAG = "water_distance";
+static char * TAG = "water_distance";
 TaskHandle_t taskCoreXHandle;
 
 Meador *meador;
@@ -15,7 +15,6 @@ Meador *meador;
 void taskCoreX(void *pvParameters) {
   // delay(2 * 1000);
   vTaskDelay(pdMS_TO_TICKS(2 * 1000));
-  // ESP_LOGD(TAG, "", esp_cpu_get_cpuid());
   Meador *meador = (Meador *)pvParameters;
 
   for (;;) {
@@ -59,8 +58,8 @@ void WaterDistanceComponent::setup() {
 }
 void WaterDistanceComponent::dump_config() {
   ESP_LOGD(TAG, "WaterDistance:");
-  LOG_SENSOR(TAG, "Temperature", this->temperature_sensor_);
-  LOG_SENSOR(TAG, "Humidity", this->humidity_sensor_);
+  // LOG_SENSOR(TAG, "Temperature", this->temperature_sensor_);
+  // LOG_SENSOR(TAG, "Humidity", this->humidity_sensor_);
 }
 float WaterDistanceComponent::get_setup_priority() const {
   return setup_priority::IO;
