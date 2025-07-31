@@ -80,12 +80,12 @@ void WaterDistanceComponent::set_echo_pin(int pin) {
 
 void WaterDistanceComponent::set_trigger_pin(int pin) {
   ESP_LOGD(TAG, "set_trigger_pin| inicio de la funcion");
-  LOG_SENSOR(TAG, "set_trigger_pin| inicio de la funcionoon");
+  LOG_SENSOR(TAG, "set_trigger_pin| inicio de la funcionoon", this);
   this->trigger_pin = pin;
   // TODO: Agregar mutex
   if(meador == nullptr) {
     ESP_LOGD(TAG, "set_trigger_pin| meador es nullptr");
-    LOG_SENSOR(TAG, "set_trigger_pin| meador es nullptr");
+    LOG_SENSOR(TAG, "set_trigger_pin| meador es nullptr", this);
   }
   meador->trigger_pin = pin;
 }
