@@ -10,10 +10,11 @@ namespace water_distance {
 static char * TAG = "water_distance";
 TaskHandle_t taskCoreXHandle;
 
-Meador *meador;
+Meador *meador = nullptr;
 
 void taskCoreX(void *pvParameters) {
   // delay(2 * 1000);
+  ESP_LOGD(TAG, "taskCoreX iniciado!!!");
   vTaskDelay(pdMS_TO_TICKS(2 * 1000));
   Meador *meador = (Meador *)pvParameters;
 
@@ -40,6 +41,7 @@ void WaterDistanceComponent::update() {
 }
 void WaterDistanceComponent::setup() {
   ESP_LOGCONFIG(TAG, "Running setup");
+  ESP_LOGD(TAG, "WaterDistanceComponent::setup()");
   meador = new Meador(TAG);
   meador->echo_pin = this->echo_pin;
   meador->trigger_pin = this->trigger_pin;
@@ -57,7 +59,7 @@ void WaterDistanceComponent::setup() {
   );
 }
 void WaterDistanceComponent::dump_config() {
-  ESP_LOGD(TAG, "WaterDistance:");
+  ESP_LOGD(TAG, "WaterDistance::dump_config()");
   // LOG_SENSOR(TAG, "Temperature", this->temperature_sensor_);
   // LOG_SENSOR(TAG, "Humidity", this->humidity_sensor_);
 }
@@ -77,8 +79,14 @@ void WaterDistanceComponent::set_echo_pin(int pin) {
 }
 
 void WaterDistanceComponent::set_trigger_pin(int pin) {
+  ESP_LOGD(TAG, "set_trigger_pin| inicio de la funcion");
+  LOG_SENSOR(TAG, "set_trigger_pin| inicio de la funcionoon");
   this->trigger_pin = pin;
   // TODO: Agregar mutex
+  if(meador == nullptr) {
+    ESP_LOGD(TAG, "set_trigger_pin| meador es nullptr");
+    LOG_SENSOR(TAG, "set_trigger_pin| meador es nullptr");
+  }
   meador->trigger_pin = pin;
 }
 
