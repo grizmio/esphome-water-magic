@@ -40,7 +40,7 @@ void WaterDistanceComponent::update() {
   this->status_clear_warning();
 }
 void WaterDistanceComponent::setup() {
-  ESP_LOGCONFIG(TAG, "Running setup");
+  ESP_LOGCONFIG(TAG, "Running setup de WaterDistanceComponent::setup, create meador = new Meador");
   ESP_LOGD(TAG, "WaterDistanceComponent::setup()");
   meador = new Meador(TAG);
   meador->echo_pin = this->echo_pin;
