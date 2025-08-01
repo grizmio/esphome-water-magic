@@ -75,6 +75,11 @@ double WaterDistanceComponent::to_liters(double distance) {
 void WaterDistanceComponent::set_echo_pin(int pin) {
   this->echo_pin = pin;
   // TODO: Agregar mutex
+  if(meador == nullptr){
+    ESP_LOGD(TAG, "set_echo_pin| meador es nullptr");
+    LOG_SENSOR(TAG, "set_echo_pin| meador es nullptr", this);
+    return;
+  }
   meador->echo_pin = pin;
 }
 
@@ -86,6 +91,7 @@ void WaterDistanceComponent::set_trigger_pin(int pin) {
   if(meador == nullptr) {
     ESP_LOGD(TAG, "set_trigger_pin| meador es nullptr");
     LOG_SENSOR(TAG, "set_trigger_pin| meador es nullptr", this);
+    return;
   }
   meador->trigger_pin = pin;
 }
