@@ -13,7 +13,7 @@ class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
   float get_setup_priority() const override;
   void update() override;
 
-  void set_temperature_sensor(sensor::Sensor *temperature_sensor) { temperature_sensor_ = temperature_sensor; }
+  void set_distance_sensor(sensor::Sensor *distance_sensor) { distance_sensor_ = distance_sensor; }
   void set_humidity_sensor(sensor::Sensor *humidity_sensor) { humidity_sensor_ = humidity_sensor; }
 
   void set_echo_pin(int pin);
@@ -31,7 +31,7 @@ class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
 
  protected:
 
-  sensor::Sensor *temperature_sensor_{nullptr};
+  sensor::Sensor *distance_sensor_{nullptr};
   sensor::Sensor *humidity_sensor_{nullptr};
 };
 

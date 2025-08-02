@@ -33,8 +33,8 @@ void taskCoreX(void *pvParameters) {
 
 void WaterDistanceComponent::update() {
   ESP_LOGD(TAG, "update()");
-  if (this->temperature_sensor_ != nullptr)
-    this->temperature_sensor_->publish_state(12);
+  if (this->distance_sensor_ != nullptr)
+    this->distance_sensor_->publish_state(12);
   if (this->humidity_sensor_ != nullptr)
     this->humidity_sensor_->publish_state(34);
   this->status_clear_warning();
@@ -60,7 +60,7 @@ void WaterDistanceComponent::setup() {
 }
 void WaterDistanceComponent::dump_config() {
   ESP_LOGD(TAG, "WaterDistance::dump_config()");
-  // LOG_SENSOR(TAG, "Temperature", this->temperature_sensor_);
+  // LOG_SENSOR(TAG, "Distance", this->distance_sensor_);
   // LOG_SENSOR(TAG, "Humidity", this->humidity_sensor_);
 }
 float WaterDistanceComponent::get_setup_priority() const {

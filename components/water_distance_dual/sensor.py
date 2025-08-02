@@ -4,11 +4,11 @@ import esphome.config_validation as cv
 from esphome.const import (
     CONF_HUMIDITY,
     CONF_ID,
-    CONF_TEMPERATURE,
+    CONF_DISTANCE,
     DEVICE_CLASS_HUMIDITY,
-    DEVICE_CLASS_TEMPERATURE,
+    DEVICE_CLASS_DISTANCE,
     STATE_CLASS_MEASUREMENT,
-    UNIT_CELSIUS,
+    UNIT_CENTIMETER,
     UNIT_PERCENT,
 )
 
@@ -30,10 +30,10 @@ CONFIG_SCHEMA = (
             cv.Optional(ECHO_PIN, default=15): cv.int_,
             cv.Optional(DISTANCE_ADJUSTMENT, default=0): cv.float_,
             cv.Optional(DISTANCE_TO_LITERS_FACTOR, default=3141.592653589793238): cv.float_,
-            cv.Optional(CONF_TEMPERATURE): sensor.sensor_schema(
-                unit_of_measurement=UNIT_CELSIUS,
+            cv.Optional(CONF_DISTANCE): sensor.sensor_schema(
+                unit_of_measurement=UNIT_CENTIMETER,
                 accuracy_decimals=1,
-                device_class=DEVICE_CLASS_TEMPERATURE,
+                device_class=DEVICE_CLASS_DISTANCE,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional(CONF_HUMIDITY): sensor.sensor_schema(
@@ -61,7 +61,7 @@ async def to_code(config):
 
     if CONF_TEMPERATURE in config:
         sens = await sensor.new_sensor(config[CONF_TEMPERATURE])
-        cg.add(var.set_temperature_sensor(sens))
+        cg.add(var.set_distance_sensor(sens))
 
     if CONF_HUMIDITY in config:
         sens = await sensor.new_sensor(config[CONF_HUMIDITY])
