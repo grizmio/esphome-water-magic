@@ -59,8 +59,8 @@ async def to_code(config):
     cg.add(var.set_distance_adjustment(config[DISTANCE_ADJUSTMENT]))
     cg.add(var.set_distance_to_liters_factor(config[DISTANCE_TO_LITERS_FACTOR]))
 
-    if CONF_TEMPERATURE in config:
-        sens = await sensor.new_sensor(config[CONF_TEMPERATURE])
+    if CONF_DISTANCE in config:
+        sens = await sensor.new_sensor(config[CONF_DISTANCE])
         cg.add(var.set_distance_sensor(sens))
 
     if CONF_HUMIDITY in config:
