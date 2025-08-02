@@ -14,7 +14,7 @@ class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
   void update() override;
 
   void set_distance_sensor(sensor::Sensor *distance_sensor) { distance_sensor_ = distance_sensor; }
-  void set_humidity_sensor(sensor::Sensor *humidity_sensor) { humidity_sensor_ = humidity_sensor; }
+  void set_level_sensor(sensor::Sensor *level_sensor) { level_sensor_ = level_sensor; }
 
   void set_echo_pin(int pin);
   void set_trigger_pin(int pin);
@@ -32,7 +32,7 @@ class WaterDistanceComponent : public sensor::Sensor, public PollingComponent {
  protected:
 
   sensor::Sensor *distance_sensor_{nullptr};
-  sensor::Sensor *humidity_sensor_{nullptr};
+  sensor::Sensor *level_sensor_{nullptr};
 };
 
 }  // namespace water_distance

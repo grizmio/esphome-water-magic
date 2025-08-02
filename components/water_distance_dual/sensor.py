@@ -2,14 +2,14 @@ import esphome.codegen as cg
 from esphome.components import sensor
 import esphome.config_validation as cv
 from esphome.const import (
-    CONF_HUMIDITY,
+    CONF_LEVEL,
     CONF_ID,
     CONF_DISTANCE,
-    DEVICE_CLASS_HUMIDITY,
+    DEVICE_CLASS_WATER,
     DEVICE_CLASS_DISTANCE,
     STATE_CLASS_MEASUREMENT,
     UNIT_CENTIMETER,
-    UNIT_PERCENT,
+    UNIT_LITRE,
 )
 
 CODEOWNERS = ["@grizmio"]
@@ -36,10 +36,10 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_DISTANCE,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
-            cv.Optional(CONF_HUMIDITY): sensor.sensor_schema(
-                unit_of_measurement=UNIT_PERCENT,
+            cv.Optional(CONF_LEVEL): sensor.sensor_schema(
+                unit_of_measurement=UNIT_LITRE,
                 accuracy_decimals=1,
-                device_class=DEVICE_CLASS_HUMIDITY,
+                device_class=DEVICE_CLASS_WATER,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
         }
@@ -63,7 +63,7 @@ async def to_code(config):
         sens = await sensor.new_sensor(config[CONF_DISTANCE])
         cg.add(var.set_distance_sensor(sens))
 
-    if CONF_HUMIDITY in config:
-        sens = await sensor.new_sensor(config[CONF_HUMIDITY])
+    if CONF_LEVEL in config:
+        sens = await sensor.new_sensor(config[CONF_LEVEL])
         cg.add(var.set_humidity_sensor(sens))
 
