@@ -54,11 +54,6 @@ async def to_code(config):
     cg.add_platformio_option("framework", "arduino")
     cg.add_build_flag("-DUSE_ARDUINO")
 
-    cg.add(var.set_trigger_pin(config[TRIGGER_PIN]))
-    cg.add(var.set_echo_pin(config[ECHO_PIN]))
-    cg.add(var.set_distance_adjustment(config[DISTANCE_ADJUSTMENT]))
-    cg.add(var.set_distance_to_liters_factor(config[DISTANCE_TO_LITERS_FACTOR]))
-
     if CONF_DISTANCE in config:
         sens = await sensor.new_sensor(config[CONF_DISTANCE])
         cg.add(var.set_distance_sensor(sens))
@@ -67,3 +62,7 @@ async def to_code(config):
         sens = await sensor.new_sensor(config[CONF_LEVEL])
         cg.add(var.set_level_sensor(sens))
 
+    cg.add(var.set_trigger_pin(config[TRIGGER_PIN]))
+    cg.add(var.set_echo_pin(config[ECHO_PIN]))
+    cg.add(var.set_distance_adjustment(config[DISTANCE_ADJUSTMENT]))
+    cg.add(var.set_distance_to_liters_factor(config[DISTANCE_TO_LITERS_FACTOR]))
